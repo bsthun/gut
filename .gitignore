@@ -1,0 +1,10 @@
+# Local
+/local
+
+# Editor
+.vscode/*
+.idea/*
+!.idea/.name
+
+# OS
+.DS_Store
