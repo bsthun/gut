@@ -21,7 +21,7 @@ var Commit = func() string {
 			}
 		}
 		if hash == "" || modified == "" {
-			Fatal("Failed to get build info", nil)
+			return ""
 		}
 		return hash + modified + "/" + Build
 	}
