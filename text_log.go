@@ -1,4 +1,4 @@
-package uu
+package gut
 
 import (
 	"fmt"

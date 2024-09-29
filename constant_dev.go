@@ -1,5 +1,5 @@
 //go:build !prod
 
-package uu
+package gut
 
 const Build = "dev"

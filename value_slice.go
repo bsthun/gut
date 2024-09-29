@@ -1,4 +1,4 @@
-package uu
+package gut
 
 func Equal[T comparable](a, b []T) bool {
 	if len(a) != len(b) {

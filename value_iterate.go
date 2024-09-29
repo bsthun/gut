@@ -1,4 +1,4 @@
-package uu
+package gut
 
 func Iterate[A any, B any](a []A, mapper func(a A) (B, *ErrorInstance)) ([]B, *ErrorInstance) {
 	result := make([]B, 0)

@@ -1,4 +1,4 @@
-package uu
+package gut
 
 func BoolCount[v int8 | uint8](bool ...bool) v {
 	var n v

@@ -1,4 +1,4 @@
-package uu
+package gut
 
 func Ptr[T any](v T) *T {
 	return &v

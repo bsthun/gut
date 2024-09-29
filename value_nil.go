@@ -1,4 +1,4 @@
-package uu
+package gut
 
 func Val[T any](pointer *T, defaultValue ...T) T {
 	var variable T

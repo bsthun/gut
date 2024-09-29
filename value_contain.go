@@ -1,4 +1,4 @@
-package uu
+package gut
 
 func Contain[T comparable](arr []T, elem T) bool {
 	for _, a := range arr {
