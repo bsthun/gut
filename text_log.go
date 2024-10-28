@@ -19,37 +19,38 @@ var argValueColor = color.C256(246)
 var argErrorColor = color.New(color.FgRed)
 var separatorColor = color.New(color.FgGray)
 
-func PrintTime() {
-	now := time.Now().Format("03:04:05 PM")
-	timeColor.Print(now)
+func PrintTime() string {
+	return timeColor.Render(time.Now().Format("03:04:05 PM"))
 }
 
-func PrintCaller(skip int) {
+func PrintCaller(skip int) string {
 	pc, _, line, ok := runtime.Caller(skip)
 	if !ok {
 		panic("No caller information")
 	}
 	name := runtime.FuncForPC(pc).Name()
 	name = name[strings.LastIndex(name, "/")+1:]
-	callerColor.Print(name + ":" + strconv.Itoa(line))
+	return callerColor.Sprint(name + ":" + strconv.Itoa(line))
 }
 
-func PrintSeparator() {
-	separatorColor.Print(" • ")
+func PrintSeparator() string {
+	return separatorColor.Render(" • ")
 }
 
 func Debug(args ...any) {
+	var output strings.Builder
+
 	// Print time
-	PrintTime()
+	output.WriteString(PrintTime())
 
 	// Print caller
-	PrintSeparator()
-	PrintCaller(2)
+	output.WriteString(PrintSeparator())
+	output.WriteString(PrintCaller(2))
 
 	// Print message
 	if v, ok := args[0].(string); ok {
-		PrintSeparator()
-		messageColor.Print(v)
+		output.WriteString(PrintSeparator())
+		output.WriteString(messageColor.Sprint(v))
 		args = args[1:]
 	}
 
@@ -57,50 +58,52 @@ func Debug(args ...any) {
 	key := true
 	for len(args) > 0 {
 		if v, ok := args[0].(string); ok && key {
-			println()
-			argKeyColor.Print(" - " + v)
+			output.WriteString("\n")
+			output.WriteString(argKeyColor.Sprint(" - " + v))
 			key = false
 		} else if v, ok := args[0].(error); ok {
-			println()
-			argErrorColor.Print(" - " + v.Error())
+			output.WriteString("\n")
+			output.WriteString(argErrorColor.Render(" - " + v.Error()))
 			key = false
 		} else {
-			argValueColor.Print(" " + fmt.Sprintf("%v", args[0]))
+			output.WriteString(argValueColor.Sprint(" " + fmt.Sprintf("%v", args[0])))
 			key = true
 		}
 		args = args[1:]
 	}
-	println()
+	output.WriteString("\n")
+	fmt.Print(output.String())
 }
 
 func Error(message string, err error, fatal ...bool) {
+	var output strings.Builder
+
 	// Print time
-	PrintTime()
+	output.WriteString(PrintTime())
 
 	// Print caller
-	PrintSeparator()
+	output.WriteString(PrintSeparator())
 	if len(fatal) > 0 {
-		PrintCaller(3)
+		output.WriteString(PrintCaller(3))
 	} else {
-		PrintCaller(2)
+		output.WriteString(PrintCaller(2))
 	}
 
 	// Print message
-	PrintSeparator()
-	messageColor.Print(message)
+	output.WriteString(PrintSeparator())
+	output.WriteString(messageColor.Sprint(message))
 
 	// Print error
-	if err == nil {
-		println()
-		return
+	if err != nil {
+		if strings.Index(err.Error(), "\n") != -1 {
+			output.WriteString("\n" + argErrorColor.Render(err.Error()))
+		} else {
+			output.WriteString(PrintSeparator() + argErrorColor.Render(err.Error()))
+		}
 	}
-	if strings.Index(err.Error(), "\n") != -1 {
-		println()
-		argErrorColor.Println(err.Error())
-	} else {
-		PrintSeparator()
-		argErrorColor.Println(err.Error())
-	}
+
+	output.WriteString("\n")
+	fmt.Print(output.String())
 }
 
 func Fatal(message string, err error) {
