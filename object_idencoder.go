@@ -15,7 +15,6 @@ const (
 type Id uint64
 
 func (id *Id) MarshalJSON() ([]byte, error) {
-	println(*id)
 	return json.Marshal(EncodeId(uint64(*id)))
 }
 
