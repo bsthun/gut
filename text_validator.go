@@ -3,6 +3,7 @@ package gut
 import (
 	"errors"
 	"reflect"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -21,6 +22,13 @@ func Validate(schema any, tag ...string) error {
 		for i := 0; i < s.NumField(); i++ {
 			field := s.Field(i)
 			kind := field.Kind()
+
+			if s.Type() == reflect.TypeOf(time.Time{}) {
+				if len(tag) > 0 {
+					return Validator.Var(s.Interface(), tag[0])
+				}
+				return nil
+			}
 
 			if kind == reflect.Ptr {
 				field = field.Elem()
