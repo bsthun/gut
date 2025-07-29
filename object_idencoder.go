@@ -73,7 +73,7 @@ func EncodeId(id uint64) string {
 	encrypted += uint64(k[0])<<48 | uint64(k[1])<<32 | uint64(k[2])<<16 | uint64(k[3])
 
 	// * convert to base62 string
-	return toBase62(encrypted)
+	return Base62(encrypted)
 }
 
 func Decode(encoded string) (uint64, error) {
@@ -83,7 +83,7 @@ func Decode(encoded string) (uint64, error) {
 	}
 
 	// * convert from base62 string to uint64
-	encrypted, err := fromBase62(encoded)
+	encrypted, err := Base62Parse(encoded)
 	if err != nil {
 		return 0, err
 	}
@@ -114,7 +114,7 @@ func Decode(encoded string) (uint64, error) {
 	return encrypted, nil
 }
 
-func toBase62(num uint64) string {
+func Base62(num uint64) string {
 	result := make([]byte, idEncoderEncodedLength)
 
 	for i := 0; i < idEncoderEncodedLength; i++ {
@@ -131,7 +131,7 @@ func toBase62(num uint64) string {
 	return string(result)
 }
 
-func fromBase62(str string) (uint64, error) {
+func Base62Parse(str string) (uint64, error) {
 	var result uint64 = 0
 
 	for i := 0; i < len(str); i++ {
