@@ -45,7 +45,7 @@ func TestIdEncodingAllValues(t *testing.T) {
 			return
 		}
 
-		// * progress logging every billion iterations
+		// * progress logging
 		if id > 0 && id%1000000 == 0 {
 			t.Logf("tested %d values, no collisions so far", id)
 		}

@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	idEncoderCharset       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	idEncoderCharset       = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	idEncoderEncodedLength = 11 // ceil(log_62(2^64))
 	idEncoderBase          = len(idEncoderCharset)
 )
