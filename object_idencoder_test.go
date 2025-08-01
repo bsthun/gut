@@ -19,12 +19,14 @@ func TestIdEncodingAllValues(t *testing.T) {
 		t.Fatalf("failed to set encoder key: %v", err)
 	}
 
+	SetIdEncoderPaddingLength(12)
+
 	// * track encoded strings
 	seen := make(map[string]uint64)
 
 	// * test all uint64 values
 	for id := uint64(0); id < math.MaxUint64; id++ {
-		encoded := EncodeId(id)
+		encoded := IdEncode(id)
 
 		// * check for collision
 		if originalId, exists := seen[encoded]; exists {
@@ -35,7 +37,7 @@ func TestIdEncodingAllValues(t *testing.T) {
 		seen[encoded] = id
 
 		// * verify round trip
-		decoded, err := Decode(encoded)
+		decoded, err := IdDecode(encoded)
 		if err != nil {
 			t.Errorf("failed to decode %s: %v", encoded, err)
 			return
@@ -53,7 +55,7 @@ func TestIdEncodingAllValues(t *testing.T) {
 
 	// * test the final value (math.MaxUint64)
 	id := uint64(math.MaxUint64)
-	encoded := EncodeId(id)
+	encoded := IdEncode(id)
 
 	if originalId, exists := seen[encoded]; exists {
 		t.Errorf("collision detected: id %d and id %d both encode to %s",
@@ -61,7 +63,7 @@ func TestIdEncodingAllValues(t *testing.T) {
 		return
 	}
 
-	decoded, err := Decode(encoded)
+	decoded, err := IdDecode(encoded)
 	if err != nil {
 		t.Errorf("failed to decode %s: %v", encoded, err)
 		return
