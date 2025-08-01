@@ -19,7 +19,7 @@ func TestIdEncodingAllValues(t *testing.T) {
 		t.Fatalf("failed to set encoder key: %v", err)
 	}
 
-	SetIdEncoderPaddingLength(12)
+	SetIdEncoderPaddingLength(3)
 
 	// * track encoded strings
 	seen := make(map[string]uint64)

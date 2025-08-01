@@ -34,7 +34,7 @@ func (id *Id) UnmarshalJSON(data []byte) error {
 }
 
 var idEncoderKey []byte // 16-byte key
-var idEncoderPaddingLength = 3
+var idEncoderPaddingLength = 1
 
 func SetIdEncoderKey(key []byte) error {
 	if len(key) != 16 {
